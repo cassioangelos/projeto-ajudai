@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>AjudAI | Identidade Médica</title>
+
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+
+<body>
+
+    <main class="identidade-container">
+
+        <header class="identidade-header">
+
+            <div class="logo">
+                <h1>Ajud<span>AI</span></h1>
+            </div>
+
+            <h1>Minha Identidade Médica</h1>
+
+            <p>
+                Essas informações poderão ajudar você
+                em uma situação de emergência.
+            </p>
+
+        </header>
+
+
+        <!-- DADOS PESSOAIS -->
+
+        <section class="card-medico">
+
+            <h2>👤 Dados pessoais</h2>
+
+            <div class="campo">
+
+                <label for="nome">
+                    Nome completo
+                </label>
+
+                <input
+                    type="text"
+                    id="nome"
+                    placeholder="Digite seu nome completo"
+                >
+
+            </div>
+
+
+            <div class="linha">
+
+                <div class="campo">
+
+                    <label for="nascimento">
+                        Data de nascimento
+                    </label>
+
+                    <input
+                        type="date"
+                        id="nascimento"
+                    >
+
+                </div>
+
+
+                <div class="campo">
+
+                    <label for="sangue">
+                        Tipo sanguíneo
+                    </label>
+
+                    <select id="sangue">
+
+                        <option value="">
+                            Selecione
+                        </option>
+
+                        <option value="A+">A+</option>
+                        <option value="A-">A-</option>
+                        <option value="B+">B+</option>
+                        <option value="B-">B-</option>
+                        <option value="AB+">AB+</option>
+                        <option value="AB-">AB-</option>
+                        <option value="O+">O+</option>
+                        <option value="O-">O-</option>
+
+                    </select>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- ALERGIAS -->
+
+        <section class="card-medico">
+
+            <h2>⚠️ Alergias</h2>
+
+            <p class="descricao">
+                Informe medicamentos, alimentos ou outras
+                substâncias às quais você possui alergia.
+            </p>
+
+            <textarea
+                id="alergias"
+                placeholder="Ex.: Penicilina, dipirona, amendoim..."
+            ></textarea>
+
+        </section>
+
+
+        <!-- CONDIÇÕES DE SAÚDE -->
+
+        <section class="card-medico">
+
+            <h2>🩺 Condições de saúde</h2>
+
+            <p class="descricao">
+                Informe doenças ou condições importantes
+                para um atendimento médico.
+            </p>
+
+            <textarea
+                id="condicoes"
+                placeholder="Ex.: hipertensão, diabetes..."
+            ></textarea>
+
+        </section>
+
+
+        <!-- MEDICAMENTOS -->
+
+        <section class="card-medico">
+
+            <h2>💊 Medicamentos</h2>
+
+            <p class="descricao">
+                Informe medicamentos de uso contínuo.
+            </p>
+
+            <textarea
+                id="medicamentos"
+                placeholder="Nome do medicamento e dosagem..."
+            ></textarea>
+
+        </section>
+
+
+        <!-- CIRURGIAS -->
+
+        <section class="card-medico">
+
+            <h2>🏥 Cirurgias</h2>
+
+            <p class="descricao">
+                Informe cirurgias ou procedimentos médicos
+                importantes realizados anteriormente.
+            </p>
+
+            <textarea
+                id="cirurgias"
+                placeholder="Ex.: cirurgia de apendicite em 2018..."
+            ></textarea>
+
+        </section>
+
+
+        <!-- CONTATO DE EMERGÊNCIA -->
+
+        <section class="card-medico">
+
+            <h2>🚨 Contato de emergência</h2>
+
+            <div class="campo">
+
+                <label for="contato">
+                    Nome
+                </label>
+
+                <input
+                    type="text"
+                    id="contato"
+                    placeholder="Nome do contato"
+                >
+
+            </div>
+
+
+            <div class="campo">
+
+                <label for="parentesco">
+                    Parentesco
+                </label>
+
+                <input
+                    type="text"
+                    id="parentesco"
+                    placeholder="Ex.: esposa, filho, mãe..."
+                >
+
+            </div>
+
+
+            <div class="campo">
+
+                <label for="telefoneEmergencia">
+                    Telefone
+                </label>
+
+                <input
+                    type="tel"
+                    id="telefoneEmergencia"
+                    placeholder="(00) 00000-0000"
+                >
+
+            </div>
+
+        </section>
+
+
+        <!-- OBSERVAÇÕES -->
+
+        <section class="card-medico">
+
+            <h2>📝 Informações adicionais</h2>
+
+            <textarea
+                id="observacoes"
+                placeholder="Alguma informação que você considera importante?"
+            ></textarea>
+
+        </section>
+
+
+        <!-- BOTÕES -->
+
+        <section class="acoes">
+
+            <button
+                type="button"
+                class="btn-principal"
+                onclick="salvarIdentidade()"
+            >
+                Salvar e continuar
+            </button>
+
+        </section>
+
+
+        <p
+            id="mensagem"
+            class="mensagem"
+        ></p>
+
+
+    </main>
+
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="../js/app.js"></script>
+
+</body>
+
+</html>

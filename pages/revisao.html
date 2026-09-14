@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1.0">
+
+    <title>AjudAI | Revisar identidade</title>
+
+    <link rel="stylesheet" href="../css/style.css">
+
+</head>
+
+<body>
+
+    <main class="identidade-container">
+
+        <header class="identidade-header">
+
+            <div class="logo">
+                <h1>Ajud<span>AI</span></h1>
+            </div>
+
+            <h1>Revisar minha identidade</h1>
+
+            <p>
+                Confira suas informações antes de confirmar.
+            </p>
+
+        </header>
+
+
+        <section class="card-medico">
+
+            <h2>👤 Dados pessoais</h2>
+
+            <p>
+                <strong>Nome:</strong>
+                <span id="nome"></span>
+            </p>
+
+            <p>
+                <strong>Data de nascimento:</strong>
+                <span id="nascimento"></span>
+            </p>
+
+            <p>
+                <strong>Tipo sanguíneo:</strong>
+                <span id="sangue"></span>
+            </p>
+
+        </section>
+
+
+        <section class="card-medico">
+
+            <h2>⚠️ Alergias</h2>
+
+            <p id="alergias"></p>
+
+        </section>
+
+
+        <section class="card-medico">
+
+            <h2>🩺 Condições de saúde</h2>
+
+            <p id="condicoes"></p>
+
+        </section>
+
+
+        <section class="card-medico">
+
+            <h2>💊 Medicamentos</h2>
+
+            <p id="medicamentos"></p>
+
+        </section>
+
+
+        <section class="card-medico">
+
+            <h2>🏥 Cirurgias</h2>
+
+            <p id="cirurgias"></p>
+
+        </section>
+
+
+        <section class="card-medico">
+
+            <h2>🚨 Contato de emergência</h2>
+
+            <p>
+                <strong>Nome:</strong>
+                <span id="contato"></span>
+            </p>
+
+            <p>
+                <strong>Parentesco:</strong>
+                <span id="parentesco"></span>
+            </p>
+
+            <p>
+                <strong>Telefone:</strong>
+                <span id="telefoneEmergencia"></span>
+            </p>
+
+        </section>
+
+
+        <section class="card-medico">
+
+            <h2>📝 Informações adicionais</h2>
+
+            <p id="observacoes"></p>
+
+        </section>
+
+
+        <section class="acoes">
+
+            <button
+                type="button"
+                class="btn-principal"
+                onclick="confirmarIdentidade()">
+
+                ✅ Confirmar identidade
+
+            </button>
+
+            <button
+                type="button"
+                class="btn-secundario"
+                onclick="voltarParaEdicao()">
+
+                ✏️ Editar informações
+
+            </button>
+
+        </section>
+
+
+    </main>
+
+
+    <script>
+
+        const identidade =
+            JSON.parse(
+                localStorage.getItem("ajudai_identidade")
+            );
+
+
+        if (!identidade) {
+
+            alert("Nenhuma identidade médica encontrada.");
+
+            window.location.href = "identidade.html";
+
+        }
+
+
+        document.getElementById("nome").textContent =
+            identidade.nome || "Não informado";
+
+
+        document.getElementById("nascimento").textContent =
+            identidade.nascimento || "Não informado";
+
+
+        document.getElementById("sangue").textContent =
+            identidade.sangue || "Não informado";
+
+
+        document.getElementById("alergias").textContent =
+            identidade.alergias || "Nenhuma informação";
+
+
+        document.getElementById("condicoes").textContent =
+            identidade.condicoes || "Nenhuma informação";
+
+
+        document.getElementById("medicamentos").textContent =
+            identidade.medicamentos || "Nenhuma informação";
+
+
+        document.getElementById("cirurgias").textContent =
+            identidade.cirurgias || "Nenhuma informação";
+
+
+        document.getElementById("contato").textContent =
+            identidade.contato || "Não informado";
+
+
+        document.getElementById("parentesco").textContent =
+            identidade.parentesco || "Não informado";
+
+
+        document.getElementById("telefoneEmergencia").textContent =
+            identidade.telefoneEmergencia || "Não informado";
+
+
+        document.getElementById("observacoes").textContent =
+            identidade.observacoes || "Nenhuma informação";
+
+
+        function voltarParaEdicao() {
+
+            window.location.href = "identidade.html";
+
+        }
+
+
+        function confirmarIdentidade() {
+
+            localStorage.setItem(
+                "ajudai_identidade_confirmada",
+                "true"
+            );
+
+            window.location.href = "perfil.html";
+
+        }
+
+    </script>
+
+</body>
+
+</html>

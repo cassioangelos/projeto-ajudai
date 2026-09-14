@@ -1,0 +1,561 @@
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial, Helvetica, sans-serif;
+}
+
+body{
+
+    background:linear-gradient(135deg,#0f172a,#0b5c6b,#16a34a);
+
+    height:100vh;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    overflow:hidden;
+
+}
+
+.background{
+
+    position:absolute;
+
+    width:900px;
+
+    height:900px;
+
+    border-radius:50%;
+
+    background:rgba(255,255,255,.05);
+
+    filter:blur(120px);
+
+}
+
+.container{
+
+    width:420px;
+
+    padding:50px;
+
+    border-radius:25px;
+
+    background:rgba(255,255,255,.12);
+
+    backdrop-filter:blur(18px);
+
+    text-align:center;
+
+    box-shadow:0 20px 60px rgba(0,0,0,.35);
+
+}
+
+.logo h1{
+
+    font-size:64px;
+
+    color:white;
+
+}
+
+.logo span{
+
+    color:#7CFFB2;
+
+}
+
+h2{
+
+    margin-top:15px;
+
+    color:white;
+
+    font-size:22px;
+
+    font-weight:400;
+
+}
+
+.slogan{
+
+    margin-top:18px;
+
+    color:#d9d9d9;
+
+    line-height:30px;
+
+}
+
+.buttons{
+
+    margin-top:45px;
+
+}
+
+button{
+
+    width:100%;
+
+    height:55px;
+
+    border:none;
+
+    border-radius:15px;
+
+    font-size:18px;
+
+    cursor:pointer;
+
+    transition:.30s;
+
+}
+
+.btn-primary{
+
+    background:#10b981;
+
+    color:white;
+
+}
+
+.btn-primary:hover{
+
+    transform:translateY(-3px);
+
+    box-shadow:0 10px 25px rgba(16,185,129,.45);
+
+}
+
+.btn-secondary{
+
+    margin-top:18px;
+
+    background:white;
+
+    color:#0f172a;
+
+}
+
+.btn-secondary:hover{
+
+    transform:translateY(-3px);
+
+}
+/* ============================= */
+/* CADASTRO */
+/* ============================= */
+
+.cadastro-container {
+
+    width: 450px;
+
+    max-height: 90vh;
+
+    overflow-y: auto;
+
+}
+
+.cadastro-container h2 {
+
+    margin-top: 10px;
+
+}
+
+#cadastroForm {
+
+    margin-top: 30px;
+
+    text-align: left;
+
+}
+
+.form-group {
+
+    margin-bottom: 18px;
+
+}
+
+.form-group label {
+
+    display: block;
+
+    margin-bottom: 7px;
+
+    color: white;
+
+    font-size: 14px;
+
+}
+
+.form-group input {
+
+    width: 100%;
+
+    height: 48px;
+
+    padding: 0 15px;
+
+    border: 1px solid rgba(255,255,255,.25);
+
+    border-radius: 12px;
+
+    background: rgba(255,255,255,.12);
+
+    color: white;
+
+    font-size: 16px;
+
+    outline: none;
+
+    transition: .25s;
+
+}
+
+.form-group input::placeholder {
+
+    color: rgba(255,255,255,.60);
+
+}
+
+.form-group input:focus {
+
+    border-color: #7CFFB2;
+
+    background: rgba(255,255,255,.18);
+
+    box-shadow: 0 0 0 3px rgba(124,255,178,.12);
+
+}
+
+.form-group input[type="date"] {
+
+    color-scheme: dark;
+
+}
+
+.cadastro-container .btn-primary {
+
+    margin-top: 8px;
+
+}
+
+.back-button {
+
+    margin-top: 20px;
+
+    border: none;
+
+    background: transparent;
+
+    color: rgba(255,255,255,.75);
+
+    font-size: 15px;
+
+    cursor: pointer;
+
+    transition: .25s;
+
+}
+
+.back-button:hover {
+
+    color: white;
+
+}
+/* =========================================================
+   AJUDAI - IDENTIDADE MÉDICA
+   ========================================================= */
+
+.identidade-container {
+    width: 92%;
+    max-width: 850px;
+    margin: 40px auto;
+    padding-bottom: 50px;
+}
+
+
+/* CABEÇALHO */
+
+.identidade-header {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.identidade-header .logo {
+    margin-bottom: 15px;
+}
+
+.identidade-header .logo h1 {
+    font-size: 42px;
+    margin: 0;
+}
+
+.identidade-header h1 {
+    color: #ffffff;
+    font-size: 32px;
+    margin: 10px 0;
+}
+
+.identidade-header p {
+    color: rgba(255, 255, 255, 0.85);
+    font-size: 16px;
+    margin: 0 auto;
+    max-width: 600px;
+    line-height: 1.5;
+}
+
+
+/* CARTÕES */
+
+.card-medico {
+    background: rgba(255, 255, 255, 0.95);
+
+    border-radius: 18px;
+
+    padding: 25px;
+
+    margin-bottom: 20px;
+
+    box-shadow:
+        0 10px 30px rgba(0, 0, 0, 0.12);
+
+    backdrop-filter: blur(10px);
+}
+
+
+/* TÍTULOS DOS CARTÕES */
+
+.card-medico h2 {
+    margin: 0 0 18px 0;
+
+    font-size: 21px;
+
+    color: #123047;
+
+    font-weight: 600;
+}
+
+
+/* DESCRIÇÃO */
+
+.card-medico .descricao {
+    margin-top: -8px;
+    margin-bottom: 15px;
+
+    color: #64748b;
+
+    font-size: 14px;
+
+    line-height: 1.5;
+}
+
+
+/* CAMPOS */
+
+.campo {
+    margin-bottom: 18px;
+}
+
+.campo:last-child {
+    margin-bottom: 0;
+}
+
+.campo label {
+    display: block;
+
+    margin-bottom: 7px;
+
+    color: #334155;
+
+    font-size: 14px;
+
+    font-weight: 600;
+}
+
+
+/* INPUTS */
+
+.campo input,
+.campo select,
+.card-medico textarea {
+    width: 100%;
+
+    box-sizing: border-box;
+
+    border: 1px solid #d6dee7;
+
+    border-radius: 10px;
+
+    padding: 12px 14px;
+
+    font-family: inherit;
+
+    font-size: 15px;
+
+    color: #1e293b;
+
+    background: #ffffff;
+
+    outline: none;
+
+    transition: 0.2s;
+}
+
+
+/* TEXTAREA */
+
+.card-medico textarea {
+    min-height: 110px;
+
+    resize: vertical;
+}
+
+
+/* FOCO */
+
+.campo input:focus,
+.campo select:focus,
+.card-medico textarea:focus {
+
+    border-color: #12c98b;
+
+    box-shadow:
+        0 0 0 3px rgba(18, 201, 139, 0.15);
+}
+
+
+/* DUAS COLUNAS */
+
+.linha {
+    display: grid;
+
+    grid-template-columns: 1fr 1fr;
+
+    gap: 18px;
+}
+
+
+/* ÁREA DOS BOTÕES */
+
+.acoes {
+    margin-top: 25px;
+
+    text-align: center;
+}
+
+
+/* BOTÃO PRINCIPAL */
+
+.btn-principal {
+
+    width: 100%;
+
+    max-width: 500px;
+
+    border: none;
+
+    border-radius: 12px;
+
+    padding: 15px 25px;
+
+    background: linear-gradient(
+        135deg,
+        #12c98b,
+        #09bfa2
+    );
+
+    color: white;
+
+    font-size: 17px;
+
+    font-weight: 600;
+
+    cursor: pointer;
+
+    box-shadow:
+        0 8px 20px rgba(18, 201, 139, 0.25);
+
+    transition:
+        transform 0.2s,
+        box-shadow 0.2s;
+}
+
+
+.btn-principal:hover {
+
+    transform: translateY(-2px);
+
+    box-shadow:
+        0 12px 25px rgba(18, 201, 139, 0.35);
+}
+
+
+.btn-principal:active {
+
+    transform: translateY(0);
+
+}
+
+
+/* MENSAGEM */
+
+.mensagem {
+
+    text-align: center;
+
+    margin-top: 18px;
+
+    font-size: 15px;
+
+    font-weight: 600;
+
+    color: #ffffff;
+}
+
+
+/* RESPONSIVIDADE */
+
+@media (max-width: 650px) {
+
+    .identidade-container {
+        width: 94%;
+        margin: 25px auto;
+    }
+
+    .identidade-header h1 {
+        font-size: 26px;
+    }
+
+    .identidade-header .logo h1 {
+        font-size: 36px;
+    }
+
+    .card-medico {
+        padding: 20px;
+
+        border-radius: 15px;
+    }
+
+    .linha {
+        grid-template-columns: 1fr;
+        gap: 0;
+    }
+
+}
+
+/* =========================================================
+   AJUDAI - ROLAGEM DA IDENTIDADE MÉDICA
+   ========================================================= */
+
+body:has(.identidade-container) {
+    height: auto;
+    min-height: 100vh;
+    overflow-y: auto;
+    overflow-x: hidden;
+    align-items: flex-start;
+}
