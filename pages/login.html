@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1.0">
+
+    <title>AjudAI | Login</title>
+
+    <link rel="stylesheet" href="../css/style.css">
+
+</head>
+
+
+<body>
+
+<div class="background"></div>
+
+
+<div class="container cadastro-container">
+
+    <!-- LOGO -->
+
+    <div class="logo">
+
+        <h1>
+            Ajud<span>AI</span>
+        </h1>
+
+    </div>
+
+
+    <h2>
+        Entrar na minha identidade
+    </h2>
+
+
+    <p class="slogan">
+        Acesse sua identidade médica com segurança.
+    </p>
+
+
+    <!-- FORMULÁRIO -->
+
+    <form id="loginForm">
+
+
+        <div class="form-group">
+
+            <label for="email">
+                E-mail
+            </label>
+
+            <input
+                type="email"
+                id="email"
+                placeholder="seuemail@email.com"
+                required
+            >
+
+        </div>
+
+
+
+        <div class="form-group">
+
+            <label for="senha">
+                Senha
+            </label>
+
+            <input
+                type="password"
+                id="senha"
+                placeholder="Digite sua senha"
+                required
+            >
+
+        </div>
+
+
+
+        <button
+            type="submit"
+            class="btn-primary"
+        >
+            Entrar
+        </button>
+
+
+    </form>
+
+
+    <!-- MENSAGEM -->
+
+    <p
+        id="mensagemLogin"
+        class="mensagem"
+    ></p>
+
+
+
+    <!-- VOLTAR -->
+
+    <button
+        type="button"
+        class="back-button"
+        onclick="window.location.href='../index.html'"
+    >
+        ← Voltar
+    </button>
+
+
+</div>
+
+
+
+<!-- SUPABASE -->
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+
+<script>
+
+
+    // =========================================
+    // CONFIGURAÇÃO SUPABASE
+    // =========================================
+
+    const SUPABASE_URL =
+        "https://ivbkqtfvbxhrnhuzhift.supabase.co";
+
+
+    const SUPABASE_PUBLISHABLE_KEY =
+        "sb_publishable_oKa4BMU205_Ujq2HhxQ0dg_ApQB3t0Q";
+
+
+    const supabaseClient =
+        window.supabase.createClient(
+            SUPABASE_URL,
+            SUPABASE_PUBLISHABLE_KEY
+        );
+
+
+
+    // =========================================
+    // FORMULÁRIO DE LOGIN
+    // =========================================
+
+    const loginForm =
+        document.getElementById("loginForm");
+
+
+    loginForm.addEventListener(
+        "submit",
+        async function(event) {
+
+            event.preventDefault();
+
+
+            const email =
+                document.getElementById("email").value.trim();
+
+
+            const senha =
+                document.getElementById("senha").value;
+
+
+            const mensagem =
+                document.getElementById("mensagemLogin");
+
+
+            mensagem.textContent =
+                "Entrando...";
+
+
+            try {
+
+
+                // =====================================
+                // LOGIN SUPABASE
+                // =====================================
+
+                const { data, error } =
+                    await supabaseClient.auth.signInWithPassword({
+
+                        email: email,
+
+                        password: senha
+
+                    });
+
+
+
+                // =====================================
+                // ERRO
+                // =====================================
+
+                if (error) {
+
+                    console.error(error);
+
+                    mensagem.textContent =
+                        "E-mail ou senha incorretos.";
+
+                    return;
+
+                }
+
+
+
+                // =====================================
+                // LOGIN REALIZADO
+                // =====================================
+
+                console.log(
+                    "Usuário autenticado:",
+                    data.user
+                );
+
+
+                mensagem.textContent =
+                    "Login realizado com sucesso!";
+
+
+                // =====================================
+                // IR PARA PERFIL
+                // =====================================
+
+                setTimeout(function() {
+
+                    window.location.href =
+                        "perfil.html";
+
+                }, 500);
+
+
+            } catch (erro) {
+
+                console.error(erro);
+
+                mensagem.textContent =
+                    "Ocorreu um erro ao tentar entrar.";
+
+            }
+
+        }
+    );
+
+
+</script>
+
+
+</body>
+
+</html>
