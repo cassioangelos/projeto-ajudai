@@ -1,11 +1,13 @@
 // =========================================
-// CONEXÃO COM SUPABASE
+// CONFIGURAÇÃO SUPABASE
 // =========================================
 
 const SUPABASE_URL =
     "https://ivbkqtfvbxhrnhuzhift.supabase.co";
 
-const SUPABASE_PUBLISHABLE_KEY = "sb_publishable_oKa4BMU205_Ujq2HhxQ0dg_ApQB3t0Q";
+const SUPABASE_PUBLISHABLE_KEY =
+    "sb_publishable_oKa4BMU205_Ujq2HhxQ0dg_ApQB3t0Q";
+
 
 const supabaseClient =
     window.supabase.createClient(
@@ -13,15 +15,10 @@ const supabaseClient =
         SUPABASE_PUBLISHABLE_KEY
     );
 
-// ======================================================
-// AjudAI
-// Aplicação principal
-// ======================================================
 
-
-// ======================================================
+// =========================================
 // NAVEGAÇÃO
-// ======================================================
+// =========================================
 
 function abrirCadastro() {
 
@@ -37,9 +34,9 @@ function abrirLogin() {
 }
 
 
-// ======================================================
-// CADASTRO
-// ======================================================
+// =========================================
+// FORMULÁRIO DE CADASTRO
+// =========================================
 
 const cadastroForm =
     document.getElementById("cadastroForm");
@@ -49,97 +46,166 @@ if (cadastroForm) {
 
     cadastroForm.addEventListener(
         "submit",
-        function (event) {
+        async function(event) {
 
             event.preventDefault();
 
 
+            const nome =
+                document.getElementById("nome").value.trim();
+
+            const nascimento =
+                document.getElementById("nascimento").value;
+
+            const cpf =
+                document.getElementById("cpf").value.trim();
+
+            const telefone =
+                document.getElementById("telefone").value.trim();
+
+            const email =
+                document.getElementById("email").value.trim();
+
             const senha =
                 document.getElementById("senha").value;
-
 
             const confirmarSenha =
                 document.getElementById("confirmarSenha").value;
 
 
-            // ------------------------------------------
+            // =====================================
             // VALIDAR SENHAS
-            // ------------------------------------------
+            // =====================================
 
             if (senha !== confirmarSenha) {
 
-                alert(
-                    "As senhas não são iguais."
-                );
+                alert("As senhas não são iguais.");
 
                 return;
 
             }
 
 
-            // ------------------------------------------
-            // SALVAR DADOS DO USUÁRIO
-            // ------------------------------------------
+            // =====================================
+            // CRIAR USUÁRIO NO SUPABASE
+            // =====================================
 
-            const usuario = {
+            try {
 
-                nome:
-                    document.getElementById("nome").value,
+                const { data, error } =
+                    await supabaseClient.auth.signUp({
 
-                nascimento:
-                    document.getElementById("nascimento").value,
+                        email: email,
 
-                cpf:
-                    document.getElementById("cpf").value,
+                        password: senha,
 
-                telefone:
-                    document.getElementById("telefone").value,
+                        options: {
 
-                email:
-                    document.getElementById("email").value
+                            data: {
 
-            };
+                                nome: nome,
 
+                                nascimento: nascimento,
 
-            localStorage.setItem(
-                "ajudai_usuario",
-                JSON.stringify(usuario)
-            );
+                                cpf: cpf,
 
+                                telefone: telefone
 
-            // ------------------------------------------
-            // CONTINUAR
-            // ------------------------------------------
+                            }
 
-            alert(
-                "✅ Cadastro realizado com sucesso!"
-            );
+                        }
+
+                    });
 
 
-            window.location.href =
-                "identidade.html";
+                if (error) {
+
+                    console.error(
+                        "Erro ao criar usuário:",
+                        error
+                    );
+
+                    alert(
+                        "Não foi possível criar a conta.\n\n" +
+                        error.message
+                    );
+
+                    return;
+
+                }
+
+
+                console.log(
+                    "Usuário criado:",
+                    data.user
+                );
+
+
+                alert(
+                    "Conta criada com sucesso!"
+                );
+
+
+                // =================================
+                // IR PARA IDENTIDADE MÉDICA
+                // =================================
+
+                window.location.href =
+                    "identidade.html";
+
+
+            } catch (erro) {
+
+                console.error(erro);
+
+                alert(
+                    "Ocorreu um erro ao criar sua conta."
+                );
+
+            }
 
         }
     );
 
 }
-
-
-// ======================================================
+// =========================================
 // IDENTIDADE MÉDICA
-// ======================================================
+// =========================================
 
-function salvarIdentidade() {
+async function salvarIdentidade() {
+
+    // =====================================
+    // VERIFICAR USUÁRIO AUTENTICADO
+    // =====================================
+
+    const {
+        data: { user },
+        error: erroUsuario
+    } = await supabaseClient.auth.getUser();
 
 
-    // ------------------------------------------
-    // COLETAR DADOS
-    // ------------------------------------------
+    if (erroUsuario || !user) {
+
+        alert(
+            "Sua sessão não foi encontrada. Faça login novamente."
+        );
+
+        window.location.href = "login.html";
+
+        return;
+    }
+
+
+    // =====================================
+    // PEGAR DADOS DO FORMULÁRIO
+    // =====================================
 
     const identidade = {
 
+        usuario_id: user.id,
+
         nome:
-            document.getElementById("nome").value,
+            document.getElementById("nome").value.trim(),
 
         nascimento:
             document.getElementById("nascimento").value,
@@ -148,109 +214,100 @@ function salvarIdentidade() {
             document.getElementById("sangue").value,
 
         alergias:
-            document.getElementById("alergias").value,
+            document.getElementById("alergias").value.trim(),
 
         condicoes:
-            document.getElementById("condicoes").value,
+            document.getElementById("condicoes").value.trim(),
 
         medicamentos:
-            document.getElementById("medicamentos").value,
+            document.getElementById("medicamentos").value.trim(),
 
         cirurgias:
-            document.getElementById("cirurgias").value,
+            document.getElementById("cirurgias").value.trim(),
 
         contato:
-            document.getElementById("contato").value,
+            document.getElementById("contato").value.trim(),
 
         parentesco:
-            document.getElementById("parentesco").value,
+            document.getElementById("parentesco").value.trim(),
 
-        telefoneEmergencia:
-            document.getElementById(
-                "telefoneEmergencia"
-            ).value,
+        telefone_emergencia:
+            document.getElementById("telefoneEmergencia").value.trim(),
 
         observacoes:
-            document.getElementById("observacoes").value
+            document.getElementById("observacoes").value.trim()
 
     };
 
 
-    // ------------------------------------------
-    // SALVAR
-    // ------------------------------------------
+    // =====================================
+    // SALVAR NO SUPABASE
+    // =====================================
 
-    localStorage.setItem(
-        "ajudai_identidade",
-        JSON.stringify(identidade)
-    );
+    try {
 
-
-    // ------------------------------------------
-    // CONTINUAR PARA REVISÃO
-    // ------------------------------------------
-
-    window.location.href =
-        "revisao.html";
-
-}
+        const {
+            data,
+            error
+        } = await supabaseClient
+            .from("identidades")
+            .insert([identidade])
+            .select()
+            .single();
 
 
-// ======================================================
-// CONFIRMAÇÃO DA IDENTIDADE
-// ======================================================
+        if (error) {
 
-function confirmarIdentidade() {
+            console.error(
+                "Erro ao salvar identidade:",
+                error
+            );
 
+            alert(
+                "Não foi possível salvar sua identidade médica.\n\n" +
+                error.message
+            );
 
-    localStorage.setItem(
-        "ajudai_identidade_confirmada",
-        "true"
-    );
-
-
-    alert(
-        "✅ Identidade médica confirmada!"
-    );
+            return;
+        }
 
 
-    // ------------------------------------------
-    // IR PARA O PERFIL
-    // ------------------------------------------
-
-    window.location.href =
-        "perfil.html";
-
-}
+        console.log(
+            "Identidade médica salva:",
+            data
+        );
 
 
-// ======================================================
-// EDITAR IDENTIDADE
-// ======================================================
+        // =================================
+        // GUARDAR TEMPORARIAMENTE PARA A
+        // PÁGINA DE REVISÃO
+        // =================================
 
-function voltarParaEdicao() {
-
-    window.location.href =
-        "identidade.html";
-
-}
-
-
-function editarIdentidade() {
-
-    window.location.href =
-        "identidade.html";
-
-}
+        localStorage.setItem(
+            "ajudai_identidade",
+            JSON.stringify(data)
+        );
 
 
-// ======================================================
-// VISUALIZAR IDENTIDADE PÚBLICA
-// ======================================================
+        // =================================
+        // IR PARA REVISÃO
+        // =================================
 
-function visualizarIdentidade() {
+        window.location.href =
+            "revisao.html";
 
-    window.location.href =
-        "publica.html";
+
+    } catch (erro) {
+
+        console.error(
+            "Erro inesperado:",
+            erro
+        );
+
+        alert(
+            "Ocorreu um erro ao salvar sua identidade médica."
+        );
+
+    }
 
 }
