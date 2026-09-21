@@ -200,10 +200,10 @@
 
                 if (error) {
 
-                    console.error(error);
+                    console.error("Erro detalhado no login:", error);
 
                     mensagem.textContent =
-                        "E-mail ou senha incorretos.";
+                        "Erro no login: " + error.message;
 
                     return;
 
