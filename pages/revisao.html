@@ -2,7 +2,6 @@
 <html lang="pt-BR">
 
 <head>
-
     <meta charset="UTF-8">
 
     <meta name="viewport"
@@ -11,7 +10,6 @@
     <title>AjudAI | Revisar identidade</title>
 
     <link rel="stylesheet" href="../css/style.css">
-
 </head>
 
 <body>
@@ -39,7 +37,7 @@
 
             <p>
                 <strong>Nome:</strong>
-                <span id="nome"></span>
+                <span id="nome">Carregando...</span>
             </p>
 
             <p>
@@ -58,7 +56,6 @@
         <section class="card-medico">
 
             <h2>⚠️ Alergias</h2>
-
             <p id="alergias"></p>
 
         </section>
@@ -67,7 +64,6 @@
         <section class="card-medico">
 
             <h2>🩺 Condições de saúde</h2>
-
             <p id="condicoes"></p>
 
         </section>
@@ -76,7 +72,6 @@
         <section class="card-medico">
 
             <h2>💊 Medicamentos</h2>
-
             <p id="medicamentos"></p>
 
         </section>
@@ -85,7 +80,6 @@
         <section class="card-medico">
 
             <h2>🏥 Cirurgias</h2>
-
             <p id="cirurgias"></p>
 
         </section>
@@ -116,7 +110,6 @@
         <section class="card-medico">
 
             <h2>📝 Informações adicionais</h2>
-
             <p id="observacoes"></p>
 
         </section>
@@ -144,70 +137,172 @@
 
         </section>
 
-
     </main>
+
+
+    <!-- SUPABASE -->
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+    <script src="../js/app.js"></script>
 
 
     <script>
 
-        const identidade =
-            JSON.parse(
-                localStorage.getItem("ajudai_identidade")
-            );
+        // =========================================
+        // CARREGAR IDENTIDADE DO SUPABASE
+        // =========================================
+
+        let identidadeAtual = null;
 
 
-        if (!identidade) {
+        async function carregarRevisao() {
 
-            alert("Nenhuma identidade médica encontrada.");
+            try {
 
-            window.location.href = "identidade.html";
+                const {
+                    data: { user },
+                    error: erroUsuario
+                } = await supabaseClient.auth.getUser();
+
+
+                if (erroUsuario || !user) {
+
+                    alert("Sua sessão expirou. Faça login novamente.");
+
+                    window.location.href = "login.html";
+
+                    return;
+                }
+
+
+                const {
+                    data: identidade,
+                    error
+                } = await supabaseClient
+                    .from("identidades")
+                    .select("*")
+                    .eq("usuario_id", user.id)
+                    .maybeSingle();
+
+
+                if (error) {
+
+                    console.error(
+                        "Erro ao buscar identidade:",
+                        error
+                    );
+
+                    alert("Não foi possível carregar sua identidade.");
+
+                    return;
+                }
+
+
+                if (!identidade) {
+
+                    alert("Nenhuma identidade médica encontrada.");
+
+                    window.location.href = "identidade.html";
+
+                    return;
+                }
+
+
+                identidadeAtual = identidade;
+
+
+                // Guardar cópia local atualizada
+
+                localStorage.setItem(
+                    "ajudai_identidade",
+                    JSON.stringify(identidade)
+                );
+
+
+                // =================================
+                // EXIBIR DADOS
+                // =================================
+
+                document.getElementById("nome").textContent =
+                    identidade.nome || "Não informado";
+
+                document.getElementById("nascimento").textContent =
+                    identidade.nascimento || "Não informado";
+
+                document.getElementById("sangue").textContent =
+                    identidade.sangue || "Não informado";
+
+                document.getElementById("alergias").textContent =
+                    identidade.alergias || "Nenhuma informação";
+
+                document.getElementById("condicoes").textContent =
+                    identidade.condicoes || "Nenhuma informação";
+
+                document.getElementById("medicamentos").textContent =
+                    identidade.medicamentos || "Nenhuma informação";
+
+                document.getElementById("cirurgias").textContent =
+                    identidade.cirurgias || "Nenhuma informação";
+
+                document.getElementById("contato").textContent =
+                    identidade.contato || "Não informado";
+
+                document.getElementById("parentesco").textContent =
+                    identidade.parentesco || "Não informado";
+
+                document.getElementById("telefoneEmergencia").textContent =
+                    identidade.telefone_emergencia || "Não informado";
+
+                document.getElementById("observacoes").textContent =
+                    identidade.observacoes || "Nenhuma informação";
+
+
+            } catch (erro) {
+
+                console.error(
+                    "Erro inesperado na revisão:",
+                    erro
+                );
+
+                alert("Ocorreu um erro ao carregar a revisão.");
+
+            }
 
         }
 
 
-        document.getElementById("nome").textContent =
-            identidade.nome || "Não informado";
+        // =========================================
+        // CONFIRMAR IDENTIDADE
+        // =========================================
+
+        function confirmarIdentidade() {
+
+            if (!identidadeAtual) {
+
+                alert("A identidade ainda não foi carregada.");
+
+                return;
+            }
 
 
-        document.getElementById("nascimento").textContent =
-            identidade.nascimento || "Não informado";
+            localStorage.setItem(
+                "ajudai_identidade_confirmada",
+                "true"
+            );
 
 
-        document.getElementById("sangue").textContent =
-            identidade.sangue || "Não informado";
+            alert("Identidade médica confirmada!");
 
 
-        document.getElementById("alergias").textContent =
-            identidade.alergias || "Nenhuma informação";
+            window.location.href = "perfil.html";
+
+        }
 
 
-        document.getElementById("condicoes").textContent =
-            identidade.condicoes || "Nenhuma informação";
-
-
-        document.getElementById("medicamentos").textContent =
-            identidade.medicamentos || "Nenhuma informação";
-
-
-        document.getElementById("cirurgias").textContent =
-            identidade.cirurgias || "Nenhuma informação";
-
-
-        document.getElementById("contato").textContent =
-            identidade.contato || "Não informado";
-
-
-        document.getElementById("parentesco").textContent =
-            identidade.parentesco || "Não informado";
-
-
-        document.getElementById("telefoneEmergencia").textContent =
-            identidade.telefoneEmergencia || "Não informado";
-
-
-        document.getElementById("observacoes").textContent =
-            identidade.observacoes || "Nenhuma informação";
-
+        // =========================================
+        // VOLTAR PARA EDIÇÃO
+        // =========================================
 
         function voltarParaEdicao() {
 
@@ -216,20 +311,13 @@
         }
 
 
-        function confirmarIdentidade() {
+        // =========================================
+        // INICIAR
+        // =========================================
 
-            localStorage.setItem(
-                "ajudai_identidade_confirmada",
-                "true"
-            );
-
-            window.location.href = "perfil.html";
-
-        }
+        carregarRevisao();
 
     </script>
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <script src="../js/app.js"></script>
 
 </body>
 
