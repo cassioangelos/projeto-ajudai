@@ -139,172 +139,217 @@
 
     <script>
 
-        // =========================================
-        // CARREGAR IDENTIDADE DO SUPABASE
-        // =========================================
+// =========================================
+// CARREGAR IDENTIDADE DO SUPABASE
+// =========================================
 
-        async function carregarPerfil() {
+async function carregarPerfil() {
 
-            const nomeElemento =
-                document.getElementById("perfilNome");
+    const nomeElemento =
+        document.getElementById("perfilNome");
 
-            const sangueElemento =
-                document.getElementById("perfilSangue");
+    const sangueElemento =
+        document.getElementById("perfilSangue");
 
-            const qrMensagem =
-                document.getElementById("qrMensagem");
+    const qrMensagem =
+        document.getElementById("qrMensagem");
 
-
-            try {
-
-                // Verificar usuário autenticado
-
-                const {
-                    data: { user },
-                    error: erroUsuario
-                } = await supabaseClient.auth.getUser();
+    const qrContainer =
+        document.getElementById("qrcode");
 
 
-                if (erroUsuario || !user) {
+    try {
 
-                    alert("Sua sessão expirou. Faça login novamente.");
+        // =====================================
+        // VERIFICAR USUÁRIO AUTENTICADO
+        // =====================================
 
-                    window.location.href = "login.html";
-
-                    return;
-                }
-
-
-                // Buscar identidade vinculada ao usuário
-
-                const {
-                    data: identidade,
-                    error
-                } = await supabaseClient
-                    .from("identidades")
-                    .select("*")
-                    .eq("usuario_id", user.id)
-                    .maybeSingle();
+        const {
+            data: { user },
+            error: erroUsuario
+        } = await supabaseClient.auth.getUser();
 
 
-                if (error) {
+        if (erroUsuario || !user) {
 
-                    console.error(
-                        "Erro ao buscar identidade:",
-                        error
-                    );
+            alert("Sua sessão expirou. Faça login novamente.");
 
-                    alert("Não foi possível carregar sua identidade médica.");
+            window.location.href = "login.html";
 
-                    return;
-                }
-
-
-                // Verificar se existe identidade
-
-                if (!identidade) {
-
-                    alert("Nenhuma identidade médica encontrada.");
-
-                    window.location.href = "identidade.html";
-
-                    return;
-                }
-
-
-                // Guardar cópia local para as páginas
-                // de revisão e edição durante esta etapa
-
-                localStorage.setItem(
-                    "ajudai_identidade",
-                    JSON.stringify(identidade)
-                );
-
-
-                // Mostrar dados
-
-                nomeElemento.textContent =
-                    identidade.nome || "Não informado";
-
-                sangueElemento.textContent =
-                    identidade.sangue || "Não informado";
-
-
-                // Gerar QR Code com ID único
-
-                const qrContainer =
-                    document.getElementById("qrcode");
-
-                qrContainer.innerHTML = "";
-
-
-                if (typeof QRCode !== "undefined") {
-
-                    new QRCode(qrContainer, {
-
-                        text: "AjudAI-ID-" + identidade.id,
-
-                        width: 180,
-
-                        height: 180
-
-                    });
-
-                    qrMensagem.textContent =
-                        "QR Code de identificação gerado.";
-
-                } else {
-
-                    qrMensagem.textContent =
-                        "Não foi possível carregar o QR Code.";
-
-                }
-
-
-            } catch (erro) {
-
-                console.error(
-                    "Erro inesperado ao carregar perfil:",
-                    erro
-                );
-
-                alert("Ocorreu um erro ao carregar seu perfil.");
-
-            }
-
+            return;
         }
 
 
-        // =========================================
-        // VISUALIZAR IDENTIDADE
-        // =========================================
+        // =====================================
+        // BUSCAR IDENTIDADE DO USUÁRIO
+        // =====================================
 
-        function visualizarIdentidade() {
+        const {
+            data: identidade,
+            error
+        } = await supabaseClient
+            .from("identidades")
+            .select("*")
+            .eq("usuario_id", user.id)
+            .maybeSingle();
 
-            window.location.href = "revisao.html";
 
+        if (error) {
+
+            console.error(
+                "Erro ao buscar identidade:",
+                error
+            );
+
+            alert("Não foi possível carregar sua identidade médica.");
+
+            return;
         }
 
 
-        // =========================================
-        // EDITAR IDENTIDADE
-        // =========================================
+        // =====================================
+        // VERIFICAR SE EXISTE IDENTIDADE
+        // =====================================
 
-        function editarIdentidade() {
+        if (!identidade) {
+
+            alert("Nenhuma identidade médica encontrada.");
 
             window.location.href = "identidade.html";
 
+            return;
         }
 
 
-        // =========================================
-        // INICIAR
-        // =========================================
+        // =====================================
+        // SALVAR CÓPIA LOCAL
+        // =====================================
 
-        carregarPerfil();
+        localStorage.setItem(
+            "ajudai_identidade",
+            JSON.stringify(identidade)
+        );
 
-    </script>
 
+        // =====================================
+        // EXIBIR DADOS DO PERFIL
+        // =====================================
+
+        nomeElemento.textContent =
+            identidade.nome || "Não informado";
+
+        sangueElemento.textContent =
+            identidade.sangue || "Não informado";
+
+
+        // =====================================
+        // PREPARAR QR CODE
+        // =====================================
+
+        qrContainer.innerHTML = "";
+
+
+        // Verificar se existe token público
+
+        if (!identidade.public_token) {
+
+            qrMensagem.textContent =
+                "Token público não encontrado.";
+
+            return;
+        }
+
+
+        // Verificar biblioteca QR Code
+
+        if (typeof QRCode === "undefined") {
+
+            qrMensagem.textContent =
+                "Biblioteca QR Code não carregada.";
+
+            return;
+        }
+
+
+        // =====================================
+        // CRIAR URL DA IDENTIDADE PÚBLICA
+        // =====================================
+
+        const paginaPublica = new URL(
+            "publica.html",
+            window.location.href
+        );
+
+
+        paginaPublica.searchParams.set(
+            "token",
+            identidade.public_token
+        );
+
+
+        // =====================================
+        // GERAR QR CODE
+        // =====================================
+
+        new QRCode(qrContainer, {
+
+            text: paginaPublica.toString(),
+
+            width: 180,
+
+            height: 180
+
+        });
+
+
+        qrMensagem.textContent =
+            "QR Code de identidade pública gerado.";
+
+
+    } catch (erro) {
+
+        console.error(
+            "Erro ao carregar perfil:",
+            erro
+        );
+
+        qrMensagem.textContent =
+            "Ocorreu um erro ao carregar sua identidade.";
+
+    }
+
+}
+
+
+// =========================================
+// VISUALIZAR IDENTIDADE
+// =========================================
+
+function visualizarIdentidade() {
+
+    window.location.href = "revisao.html";
+
+}
+
+
+// =========================================
+// EDITAR IDENTIDADE
+// =========================================
+
+function editarIdentidade() {
+
+    window.location.href = "identidade.html";
+
+}
+
+
+// =========================================
+// INICIAR CARREGAMENTO DO PERFIL
+// =========================================
+
+carregarPerfil();
+
+</script>
 </body>
 
 </html>
